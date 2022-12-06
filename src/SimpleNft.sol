@@ -47,7 +47,9 @@ contract SimpleNft is ERC721, Ownable {
     }
 
     function withdrawPayments(address payable payee) external onlyOwner {
-         uint256 balance = address(this).balance;
+        uint256 balance = address(this).balance;
+        
+        //transfer to payee
         (bool transferTx, ) = payee.call{value: balance}("");
         if (!transferTx) {
             revert WithdrawTransfer();

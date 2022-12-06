@@ -19,4 +19,24 @@ contract SimpleNftTest is Test {
     function testMintPricePaid() public {
         nft.mint{value: 0.08 ether}(address(1));
     }
+
+    function testFaildMaxSuppply() public {
+        uint256 slot = stdstore
+        .target(address(nft))
+        .sig("currentTokenId()")
+        .find();
+
+        bytes32 loc = bytes32(slot);
+        bytes32 mockedCurrentTokenId = bytes32(abi.encode(10000));
+        vm.store(address(nft), loc, mockedCurrentTokenId);
+        nft.mint{value: 0.08 ether}(address(1));
+    }
+
+    function testMintAndAdd() public {
+        nft.mint{value: 0.08 ether}(address(1));
+        vm.deal(address(1), 2e18);
+        console.log(nft.balanceOf(address(1)));
+    }
+
+
 }
